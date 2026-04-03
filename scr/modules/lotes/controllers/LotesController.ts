@@ -1,8 +1,7 @@
-import { Response } from 'express';
+import { RequestHandler, Response } from 'express';
 import { AuthRequest } from '../../../middleware/AuthMiddleware';
 import * as loteModel from '../modules/LotesModel';
 
-// CREAR LOTE
 export const crearLote = async (req: AuthRequest, res: Response) => {
   try {
     const { nombre } = req.body;
@@ -19,7 +18,6 @@ export const crearLote = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// LISTAR LOTES
 export const listarLotes = async (req: AuthRequest, res: Response) => {
   try {
     const lotes = await loteModel.getLotesByUser(req.user.id);
@@ -30,7 +28,6 @@ export const listarLotes = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ELIMINAR LOTE
 export const eliminarLote = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -40,6 +37,34 @@ export const eliminarLote = async (req: AuthRequest, res: Response) => {
 
   } catch {
     res.status(500).json({ message: 'Error al eliminar lote' });
+  }
+};
+
+export const actualizarLote: RequestHandler = async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+    const { nombre } = req.body;
+
+    if (!nombre) {
+      return res.status(400).json({
+        message: 'El nombre es obligatorio'
+      });
+    }
+
+    await loteModel.actualizarNombreLote(
+      Number(id),
+      req.user.id,
+      nombre
+    );
+
+    return res.json({
+      message: 'Nombre del lote actualizado correctamente'
+    });
+
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message || 'Error al actualizar lote'
+    });
   }
 };
 
@@ -72,7 +97,6 @@ export const quitarCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// VER CARTAS DEL LOTE
 export const verCartasLote = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -82,5 +106,40 @@ export const verCartasLote = async (req: AuthRequest, res: Response) => {
 
   } catch {
     res.status(500).json({ message: 'Error al obtener cartas del lote' });
+  }
+};
+
+export const publicarLote = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    await loteModel.publicarLote(Number(id));
+
+    return res.json({
+      message: 'Lote publicado'
+    });
+
+  } catch {
+    return res.status(500).json({ message: 'Error al publicar lote' });
+  }
+};
+
+export const verLotesPublicados: RequestHandler = async (_req, res) => {
+  const data = await loteModel.getLotesPublicados();
+  res.json(data);
+};
+
+export const despublicarLote: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await loteModel.despublicarLote(Number(id));
+
+    return res.json({
+      message: 'Lote despublicado'
+    });
+
+  } catch {
+    return res.status(500).json({ message: 'Error al despublicar' });
   }
 };

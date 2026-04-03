@@ -57,3 +57,44 @@ export const deleteCarta = (id: number) => {
     );
   });
 };
+
+export const publicarCarta = (id_carta: number) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      'UPDATE carta SET publicada = true WHERE id_carta = ?',
+      [id_carta],
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+};
+
+export const getCartasPublicadas = () => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT c.*, u.nombre_usuario 
+       FROM carta c
+       JOIN usuario u ON c.id_usuario = u.id_usuario
+       WHERE c.publicada = true`,
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+};
+
+export const despublicarCarta = (id_carta: number) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      'UPDATE carta SET publicada = false WHERE id_carta = ?',
+      [id_carta],
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
+  });
+};

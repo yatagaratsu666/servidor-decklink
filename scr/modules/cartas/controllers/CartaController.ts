@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { RequestHandler, Response } from 'express';
 import { AuthRequest } from '../../../middleware/AuthMiddleware';
 import * as cartaModel from '../models/CartaModel';
 
@@ -17,7 +17,6 @@ export const crearCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// LISTAR
 export const listarCartas = async (req: AuthRequest, res: Response) => {
   try {
     const cartas = await cartaModel.getCartasInventario(req.user.id);
@@ -28,7 +27,6 @@ export const listarCartas = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ACTUALIZAR
 export const actualizarCarta = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -45,7 +43,6 @@ export const actualizarCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ELIMINAR
 export const eliminarCarta = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -56,5 +53,40 @@ export const eliminarCarta = async (req: AuthRequest, res: Response) => {
 
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar carta' });
+  }
+};
+
+export const publicarCarta = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    await cartaModel.publicarCarta(Number(id));
+
+    return res.json({
+      message: 'Carta publicada'
+    });
+
+  } catch {
+    return res.status(500).json({ message: 'Error al publicar carta' });
+  }
+};
+
+export const verCartasPublicadas: RequestHandler = async (_req, res) => {
+  const data = await cartaModel.getCartasPublicadas();
+  res.json(data);
+};
+
+export const despublicarCarta: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await cartaModel.despublicarCarta(Number(id));
+
+    return res.json({
+      message: 'Carta despublicada'
+    });
+
+  } catch {
+    return res.status(500).json({ message: 'Error al despublicar' });
   }
 };

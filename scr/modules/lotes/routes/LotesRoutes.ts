@@ -12,5 +12,7 @@ router.post('/agregar', authMiddleware, loteController.agregarCarta);
 router.post('/quitar', authMiddleware, loteController.quitarCarta);
 
 router.get('/:id/cartas', authMiddleware, loteController.verCartasLote);
+router.put('/publicar/:id', authMiddleware, loteController.publicarLote);
+router.get('/publicados', loteController.verLotesPublicados);
 
 export default router;

@@ -6,4 +6,5 @@ export interface Carta {
   estado: string;
   imagen: string;
   id_usuario: number;
+  publicada: boolean;
 }
