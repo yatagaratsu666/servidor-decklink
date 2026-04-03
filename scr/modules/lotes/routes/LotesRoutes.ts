@@ -15,5 +15,7 @@ router.get('/:id/cartas', authMiddleware, loteController.verCartasLote);
 router.put('/publicar/:id', authMiddleware, loteController.publicarLote);
 router.get('/publicados', loteController.verLotesPublicados);
 router.put('/despublicar/:id', authMiddleware, loteController.despublicarLote);
+router.put('/update/:id', authMiddleware, loteController.actualizarLote);
+router.get('/detalle/:id', authMiddleware, loteController.obtenerLotePorId);
 
 export default router;

@@ -90,3 +90,21 @@ export const despublicarCarta: RequestHandler = async (req, res) => {
     return res.status(500).json({ message: 'Error al despublicar' });
   }
 };
+
+export const obtenerCartaPorId: RequestHandler = async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+
+    const carta = await cartaModel.getCartaById(
+      Number(id),
+      req.user.id
+    );
+
+    return res.json(carta);
+
+  } catch (error: any) {
+    return res.status(404).json({
+      message: error.message || 'Error al obtener carta'
+    });
+  }
+};

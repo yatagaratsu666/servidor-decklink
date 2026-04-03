@@ -11,5 +11,6 @@ router.delete('/delete/:id', authMiddleware, cartaController.eliminarCarta);
 router.put('/publicar/:id', authMiddleware, cartaController.publicarCarta);
 router.get('/publicadas', cartaController.verCartasPublicadas);
 router.put('/despublicar/:id', authMiddleware, cartaController.despublicarCarta);
+router.get('/detalle/:id', authMiddleware, cartaController.obtenerCartaPorId);
 
 export default router;

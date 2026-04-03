@@ -26,17 +26,41 @@ export const getLotesByUser = (id_usuario: number) => {
   });
 };
 
-
 export const deleteLote = (id_lote: number) => {
   return new Promise((resolve, reject) => {
-    db.query(
-      'DELETE FROM lote WHERE id_lote = ?',
-      [id_lote],
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result);
-      }
-    );
+
+    db.beginTransaction((err) => {
+      if (err) return reject(err);
+
+      db.query(
+        'DELETE FROM carta_lote WHERE id_lote = ?',
+        [id_lote],
+        (err) => {
+          if (err) {
+            return db.rollback(() => reject(err));
+          }
+
+          db.query(
+            'DELETE FROM lote WHERE id_lote = ?',
+            [id_lote],
+            (err, result) => {
+              if (err) {
+                return db.rollback(() => reject(err));
+              }
+
+              db.commit((err) => {
+                if (err) {
+                  return db.rollback(() => reject(err));
+                }
+
+                resolve(result);
+              });
+            }
+          );
+        }
+      );
+    });
+
   });
 };
 
@@ -147,6 +171,25 @@ export const despublicarLote = (id_lote: number) => {
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
+      }
+    );
+  });
+};
+
+export const getLoteById = (id_lote: number, id_usuario: number) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM lote 
+       WHERE id_lote = ? AND id_usuario = ?`,
+      [id_lote, id_usuario],
+      (err, result: any) => {
+        if (err) return reject(err);
+
+        if (result.length === 0) {
+          return reject(new Error('Lote no encontrado'));
+        }
+
+        resolve(result[0]);
       }
     );
   });

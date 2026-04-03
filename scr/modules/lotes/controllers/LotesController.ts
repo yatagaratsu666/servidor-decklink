@@ -143,3 +143,21 @@ export const despublicarLote: RequestHandler = async (req, res) => {
     return res.status(500).json({ message: 'Error al despublicar' });
   }
 };
+
+export const obtenerLotePorId: RequestHandler = async (req: AuthRequest, res) => {
+  try {
+    const { id } = req.params;
+
+    const lote = await loteModel.getLoteById(
+      Number(id),
+      req.user.id
+    );
+
+    return res.json(lote);
+
+  } catch (error: any) {
+    return res.status(404).json({
+      message: error.message || 'Error al obtener lote'
+    });
+  }
+};

@@ -98,3 +98,22 @@ export const despublicarCarta = (id_carta: number) => {
     );
   });
 };
+
+export const getCartaById = (id_carta: number, id_usuario: number) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `SELECT * FROM carta 
+       WHERE id_carta = ? AND id_usuario = ?`,
+      [id_carta, id_usuario],
+      (err, result: any) => {
+        if (err) return reject(err);
+
+        if (result.length === 0) {
+          return reject(new Error('Carta no encontrada'));
+        }
+
+        resolve(result[0]);
+      }
+    );
+  });
+};
