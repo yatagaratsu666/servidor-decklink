@@ -18,20 +18,23 @@ export const findUserByEmail = (email: string): Promise<User | null> => {
 export const registerUser = (user: any) => {
   return new Promise(async (resolve, reject) => {
     try {
-
       const hashedPassword = await bcrypt.hash(user.contrasena, 10);
 
       db.query(
         `INSERT INTO usuario 
-        (nombre_usuario, email, contrasena) 
-        VALUES (?, ?, ?)`,
-        [user.nombre_usuario, user.email, hashedPassword],
+        (nombre_usuario, email, contrasena, foto_perfil) 
+        VALUES (?, ?, ?, ?)`,
+        [
+          user.nombre_usuario,
+          user.email,
+          hashedPassword,
+          user.foto_perfil,
+        ],
         (err, result) => {
           if (err) return reject(err);
           resolve(result);
         }
       );
-
     } catch (error) {
       reject(error);
     }

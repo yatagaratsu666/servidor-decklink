@@ -3,4 +3,5 @@ export interface User {
   email: string;
   contrasena: string;
   nombre_usuario: string;
+  foto_perfil: string;
 }

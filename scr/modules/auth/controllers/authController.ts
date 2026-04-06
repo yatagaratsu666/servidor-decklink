@@ -36,7 +36,6 @@ export const register = async (req: Request, res: Response): Promise<Response> =
   try {
     const { nombre_usuario, email, contrasena } = req.body;
 
-    // 🔴 validación básica
     if (!nombre_usuario || !email || !contrasena) {
       return res.status(400).json({
         message: 'Todos los campos son obligatorios'
@@ -52,7 +51,6 @@ export const register = async (req: Request, res: Response): Promise<Response> =
 
   } catch (error: any) {
 
-    // ⚠️ email duplicado
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(400).json({
         message: 'El email ya está registrado'

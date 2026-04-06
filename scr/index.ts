@@ -1,13 +1,18 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import authRoutes from './modules/auth/routes/authRoutes';
 import cartaRoutes from './modules/cartas/routes/CartaRoutes';
 import loteRoutes from './modules/lotes/routes/LotesRoutes';
+
 dotenv.config();
 
 const PORT = process.env['PORT'] || 3000;
 
 const app = express();
+
+app.use(cors()); 
+app.use(cors({ origin: 'http://localhost:8081' }));
 
 app.use(express.json());
 
