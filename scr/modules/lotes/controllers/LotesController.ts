@@ -86,14 +86,14 @@ export const agregarCarta = async (req: AuthRequest, res: Response) => {
 
 export const quitarCarta = async (req: AuthRequest, res: Response) => {
   try {
-    const { id_carta } = req.body;
+    const { id_carta, id_lote } = req.body;
 
-    const result = await loteModel.sacarCartaDeLote(id_carta);
+    const result = await loteModel.sacarCartaDeLote(id_lote, id_carta);
 
-    res.json({ message: 'Carta devuelta al inventario', result });
+    res.json({ message: 'Carta quitada del lote', result });
 
   } catch {
-    res.status(500).json({ message: 'Error al devolver carta' });
+    res.status(500).json({ message: 'Error al quitar carta' });
   }
 };
 

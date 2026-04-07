@@ -107,11 +107,11 @@ export const moverCartaALote = (id_carta: number, id_lote: number) => {
   });
 };
 
-export const sacarCartaDeLote = (id_carta: number) => {
+export const sacarCartaDeLote = (id_lote: number, id_carta: number) => {
   return new Promise((resolve, reject) => {
     db.query(
-      'DELETE FROM carta_lote WHERE id_carta = ?',
-      [id_carta],
+      'DELETE FROM carta_lote WHERE id_carta = ? AND id_lote = ?',
+      [id_carta, id_lote],
       (err, result) => {
         if (err) reject(err);
         else resolve(result);

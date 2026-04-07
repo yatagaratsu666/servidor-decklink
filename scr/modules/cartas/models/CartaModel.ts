@@ -19,10 +19,7 @@ export const getCartasInventario = (id_usuario: number) => {
   return new Promise((resolve, reject) => {
     db.query(
       `SELECT * FROM carta 
-       WHERE id_usuario = ?
-       AND id_carta NOT IN (
-         SELECT id_carta FROM carta_lote
-       )`,
+       WHERE id_usuario = ?`,
       [id_usuario],
       (err, result) => {
         if (err) reject(err);
