@@ -1,0 +1,31 @@
+name: Deploy (on-prem docker)
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            cd "${{ secrets.APP_DIR }}/app"
+            git fetch --all
+            git reset --hard origin/main
+
+            docker build -t servidor-decklink:latest .
+
+            cd "${{ secrets.APP_DIR }}"
+            docker compose up -d --force-recreate
+
+            docker ps
+            docker logs --tail=80 servidor-decklink
