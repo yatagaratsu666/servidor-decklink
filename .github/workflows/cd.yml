@@ -1,32 +1,33 @@
-name: Deploy (on-prem docker)
+name: CLIENTE-CD
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
-  deploy:
+  build-and-push-docker-image:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Iniciar sesión en Docker Hub
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            set -euo pipefail
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-            cd "${{ secrets.APP_DIR }}/app"
-            git fetch --all
-            git reset --hard origin/main
+      - name: Preparar el nombre de la imagen
+        id: prep 
+        run: |
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2 | tr '[:upper:]' '[:lower:]')
+          echo "repo_name=${REPO_NAME}" >> $GITHUB_OUTPUT
 
-            docker build -t servidor-decklink:latest .
 
-            cd "${{ secrets.APP_DIR }}"
-            docker compose up -d --force-recreate
-
-            docker ps
-            docker logs --tail=80 servidor-decklink
+      - name: Construir y subir la imagen de Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ steps.prep.outputs.repo_name }}:latest

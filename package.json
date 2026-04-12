@@ -63,10 +63,7 @@
     "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^6.18.0",
-<<<<<<< HEAD
     "mongoose": "^9.4.1",
-=======
->>>>>>> 79007e446380383f5d1ff53e9e04c523095d88c0
     "mysql2": "^3.20.0",
     "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",

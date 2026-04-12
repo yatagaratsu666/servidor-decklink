@@ -1,29 +1,27 @@
-name: CI
+name: CLIENTE-CI
 
 on:
   pull_request:
-  push:
     branches: ["main"]
 
 jobs:
-  ci:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Configurar Node
+        uses: actions/setup-node@v3
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '22' 
 
-      - name: Install
+      - name: Instalar dependencias
         run: npm ci
 
-      - name: Type check
-        run: npm run type-check
+      - name: Ejecutar pruebas
+        run: npm run test 
 
-      - name: Build
-        run: npm run build
+      - name: Build de Angular 
+        run: npm run build 

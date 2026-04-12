@@ -1,19 +1,33 @@
-FROM node:20-bookworm-slim AS builder
+# ---------- BUILD ----------
+FROM node:20 AS builder
+
 WORKDIR /app
 
+# Instalar dependencias
 COPY package*.json ./
 RUN npm ci
 
+# Copiar código
 COPY . .
-RUN npm run build:compile
 
-FROM node:20-bookworm-slim AS runner
+# Build (usa tu script)
+RUN npm run build
+
+
+# ---------- PROD ----------
+FROM node:20
+
 WORKDIR /app
-ENV NODE_ENV=production
 
-COPY --from=builder /app/node_modules ./node_modules
+# Solo dependencias necesarias
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copiar build desde builder
 COPY --from=builder /app/build ./build
-COPY --from=builder /app/package.json ./package.json
 
+# Puerto
 EXPOSE 3000
-CMD ["node", "build/scr/index.js"]
+
+# Ejecutar
+CMD ["npm", "start"]
