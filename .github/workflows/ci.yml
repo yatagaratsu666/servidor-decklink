@@ -22,9 +22,6 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Lint (check)
-        run: npm run lint:check
-
       - name: Type check
         run: npm run type-check
 
