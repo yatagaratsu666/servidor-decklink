@@ -2,7 +2,6 @@ import { RequestHandler, Response } from "express";
 import { AuthRequest } from "../../../middleware/AuthMiddleware";
 import * as loteModel from "../modules/LotesModel";
 
-// ✅ CREAR LOTE
 export const crearLote = async (req: AuthRequest, res: Response) => {
   try {
     const { nombre} = req.body;
@@ -18,7 +17,6 @@ export const crearLote = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ LISTAR LOTES
 export const listarLotes = async (req: AuthRequest, res: Response) => {
   try {
     const lotes = await loteModel.getLotesByUser(req.user.id);
@@ -28,7 +26,6 @@ export const listarLotes = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ ELIMINAR
 export const eliminarLote = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -39,7 +36,6 @@ export const eliminarLote = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ ACTUALIZAR
 export const actualizarLote: RequestHandler = async (req: AuthRequest, res) => {
   try {
     const { id } = req.params;
@@ -59,7 +55,6 @@ export const actualizarLote: RequestHandler = async (req: AuthRequest, res) => {
   }
 };
 
-// ✅ AGREGAR CARTA
 export const agregarCarta = async (req: AuthRequest, res: Response) => {
   try {
     const { id_lote, id_carta } = req.body;
@@ -75,7 +70,6 @@ export const agregarCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ QUITAR CARTA
 export const quitarCarta = async (req: AuthRequest, res: Response) => {
   try {
     const { id_lote, id_carta } = req.body;
@@ -88,7 +82,6 @@ export const quitarCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ VER CARTAS
 export const verCartasLote = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -100,7 +93,6 @@ export const verCartasLote = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 🔥 PUBLICAR LOTE
 export const publicarLote = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -108,7 +100,7 @@ export const publicarLote = async (req: AuthRequest, res: Response) => {
     await loteModel.publicarLote(
       Number(id),
       req.user.id,
-      req.body // titulo, descripcion, precio
+      req.body
     );
 
     res.json({ message: "Lote publicado correctamente" });
@@ -117,7 +109,6 @@ export const publicarLote = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 🔥 VER PUBLICADOS
 export const verLotesPublicados: RequestHandler = async (_req, res) => {
   try {
     const data = await loteModel.getLotesPublicados();
@@ -127,7 +118,6 @@ export const verLotesPublicados: RequestHandler = async (_req, res) => {
   }
 };
 
-// 🔥 DESPUBLICAR
 export const despublicarLote: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
@@ -140,7 +130,6 @@ export const despublicarLote: RequestHandler = async (req, res) => {
   }
 };
 
-// ✅ OBTENER POR ID
 export const obtenerLotePorId: RequestHandler = async (req: AuthRequest, res) => {
   try {
     const { id } = req.params;

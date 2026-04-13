@@ -1,6 +1,5 @@
 import { db } from "../../../config/db";
 
-// ✅ CREAR LOTE
 export const createLote = (
   nombre: string,
   id_usuario: number
@@ -18,7 +17,6 @@ export const createLote = (
   });
 };
 
-// ✅ LISTAR LOTES DEL USUARIO
 export const getLotesByUser = (id_usuario: number) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -32,7 +30,6 @@ export const getLotesByUser = (id_usuario: number) => {
   });
 };
 
-// ✅ ELIMINAR LOTE
 export const deleteLote = (id_lote: number) => {
   return new Promise((resolve, reject) => {
 
@@ -64,7 +61,6 @@ export const deleteLote = (id_lote: number) => {
   });
 };
 
-// ✅ ACTUALIZAR NOMBRE
 export const actualizarNombreLote = (
   id_lote: number,
   id_usuario: number,
@@ -89,7 +85,6 @@ export const actualizarNombreLote = (
   });
 };
 
-// ✅ MOVER CARTA A LOTE (1 lote por carta)
 export const moverCartaALote = (id_carta: number, id_lote: number) => {
   return new Promise((resolve, reject) => {
 
@@ -113,7 +108,6 @@ export const moverCartaALote = (id_carta: number, id_lote: number) => {
   });
 };
 
-// ✅ SACAR CARTA
 export const sacarCartaDeLote = (id_lote: number, id_carta: number) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -161,7 +155,6 @@ export const getCartasFromLote = (id_lote: number) => {
   });
 };
 
-// 🔥 PUBLICAR LOTE (CORRECTO)
 export const publicarLote = (
   id_lote: number,
   id_usuario: number,
@@ -192,8 +185,7 @@ export const publicarLote = (
 
   });
 };
-
-// 🔥 VER LOTES PUBLICADOS
+// pal 2do sprint se arregla :3
 export const getLotesPublicados = () => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -211,7 +203,6 @@ export const getLotesPublicados = () => {
   });
 };
 
-// 🔥 DESPUBLICAR
 export const despublicarLote = (id_publicacion: number) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -227,7 +218,6 @@ export const despublicarLote = (id_publicacion: number) => {
   });
 };
 
-// ✅ OBTENER LOTE POR ID
 export const getLoteById = (id_lote: number, id_usuario: number) => {
   return new Promise((resolve, reject) => {
     db.query(

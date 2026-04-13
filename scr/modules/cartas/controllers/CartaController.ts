@@ -6,7 +6,6 @@ import { getCartaMongoById } from "../models/CartaModel";
 import { getCartaById } from "../models/CartaModel";
 import { getCartasPublicadas } from "../models/CartaModel";
 
-// ✅ CREAR
 export const crearCarta = async (req: AuthRequest, res: Response) => {
   try {
     const nuevaCarta = {
@@ -21,7 +20,6 @@ export const crearCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ LISTAR INVENTARIO
 export const listarCartas = async (req: AuthRequest, res: Response) => {
   try {
     const cartas = await cartaModel.getCartasInventario(req.user.id);
@@ -31,7 +29,6 @@ export const listarCartas = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ ACTUALIZAR
 export const actualizarCarta = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -43,7 +40,6 @@ export const actualizarCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ ELIMINAR
 export const eliminarCarta = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
@@ -84,7 +80,6 @@ export const publicarCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 🔥 VER PUBLICADAS
 export const verCartasPublicadas: RequestHandler = async (_req, res) => {
   try {
     const data = await getCartasPublicadas();
@@ -114,7 +109,6 @@ export const despublicarCarta = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// ✅ OBTENER POR ID
 export const obtenerCartaPorId: RequestHandler = async (
   req: AuthRequest,
   res
@@ -135,7 +129,6 @@ export const obtenerCartaPorId: RequestHandler = async (
   }
 };
 
-// 🔥 CONTROLADOR DE BÚSQUEDA
 export const buscarCartasMongoController = async (req: Request, res: Response) => {
   try {
     const { nombre } = req.query;
