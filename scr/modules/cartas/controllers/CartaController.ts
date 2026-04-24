@@ -2,7 +2,7 @@ import { RequestHandler, Response } from "express";
 import { AuthRequest } from "../../../middleware/AuthMiddleware";
 import * as cartaModel from "../models/CartaModel";
 import { Request} from "express";
-import { getCartaMongoById } from "../models/CartaModel";
+import { buscarCartasPublicadas, getCartaMongoById } from "../models/CartaModel";
 import { getCartaById } from "../models/CartaModel";
 import { getCartasPublicadas } from "../models/CartaModel";
 
@@ -98,9 +98,7 @@ export const despublicarCarta = async (req: AuthRequest, res: Response) => {
       req.user.id
     );
 
-    return res.json({
-      message: "Carta despublicada"
-    });
+    return res.json({ message: "Carta despublicada" });
 
   } catch {
     return res.status(500).json({
@@ -171,5 +169,59 @@ export const obtenerCartaMongoPorId = async (req: Request, res: Response) => {
     return res.status(404).json({
       message: error.message || "Carta no encontrada"
     });
+  }
+};
+
+export const obtenerPublicacionesUsuarioController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+
+    const { id } = req.params;
+
+    const publicaciones = await cartaModel.obtenerPublicacionesUsuario(
+      Number(id)
+    );
+
+    res.json(publicaciones);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      error: "Error al obtener publicaciones"
+    });
+
+  }
+};
+
+export const buscarCartas = async (req: Request, res: Response) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || typeof q !== "string") {
+      return res.status(400).json({ message: "Query inválida" });
+    }
+
+    const data = await buscarCartasPublicadas(q);
+
+    return res.json(data);
+  } catch (error) {
+    return res.status(500).json({ message: "Error buscando cartas" });
+  }
+};
+
+export const obtenerPublicacionesCartaUsuario = async (req: Request, res: Response) => {
+  try {
+    const id_usuario = Number(req.params['id']);
+
+    const data = await cartaModel.getCartasPublicadasUsuario(id_usuario);
+
+    res.json(data);
+  } catch (error) {
+    console.error("Error obtener publicaciones:", error);
+    res.status(500).json({ error: "Error del servidor" });
   }
 };

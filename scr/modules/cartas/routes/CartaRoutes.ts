@@ -17,4 +17,11 @@ router.get('/detalle/:id', authMiddleware, cartaController.obtenerCartaPorId);
 router.get("/buscar-mongo", buscarCartasMongoController);
 router.get("/mongo/:id", obtenerCartaMongoPorId);
 
+router.get(
+  "/publicaciones/:id",
+  cartaController.obtenerPublicacionesUsuarioController
+);
+
+router.get("/publicadas/buscar", cartaController.buscarCartas);
+
 export default router;
