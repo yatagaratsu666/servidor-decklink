@@ -70,7 +70,7 @@ app.use("/api/lotes", loteRoutes);
 app.use("/api/ofertas", ofertaRoute);
 app.use("/api/chat", chatRoute);
 
-server.listen(PORT, () => {
+server.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
 });
 
