@@ -13,5 +13,5 @@ export const ENV = {
   DB_USER: process.env["DB_USER"] || "root",
   DB_PASSWORD: process.env["DB_PASSWORD"] || "",
   DB_NAME: process.env["DB_NAME"] || "cartas_db",
-  MONGO_URI: process.env["MONGO_URI"] || "mongodb://localhost:27017/cartas_db",
+  MONGO_URI: process.env["MONGO_URI"] || "mongodb+srv://cartas_db:am38Y9nG85gTGtqj@cluster0.tdn26yu.mongodb.net/cartas_db",
 };
